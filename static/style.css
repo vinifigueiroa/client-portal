@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+
+:root {
+    --black: #1E1A1C;
+    --blue: #6EC1F2;
+    --bg: #E9EAE3;
+    --paper: #DCDBD3;
+    --yellow: #ECAF43;
+}
+
+a {
+    text-decoration: none;
+    font-size: 15px;
+    color: inherit;
+}
+
+body {
+    font-family: 'Comfortaa';
+    font-weight: 400;
+    background-color: var(--bg);
+}
+
+.button {
+    background-color: var(--bg);
+    border: 1px solid var(--black);
+    border-radius: 20px;
+    font-family: inherit;
+    padding: 12px 30px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.divider {
+    border: 1px solid var(--black);
+    margin-top: 35px;
+}
+
+form {
+    display: flex;
+    flex: 1;
+    width: 100%;
+}
+
+h1.home {
+    font-size: 40px;
+    margin-top: 70px;
+}
+
+h1.login-header {
+    font-size: 75px;
+}
+
+h2.login-header {
+    font-size: 25px;
+}
+
+h2.sessao {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+h3.sessao {
+    font-size: 28px;
+    margin-bottom: 5px;
+    margin-top: 40px;
+}
+
+.header-client {
+    font-size: 28px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+}
+
+.header-home {
+    align-items: center;
+    display: flex;
+}
+
+.header-logo {
+    margin-right: 30px;
+}
+
+input[type="text"] {
+    background-color: var(--bg);
+    border: 1px solid var(--black);
+    border-radius: 20px;
+    font-family: 'Comfortaa';
+    margin-right: 20px;
+    padding: 0px 20px;
+    text-align: right;
+    width: 100%;
+}
+
+input[type="text"]:focus {
+    outline: none;
+}
+
+li {
+    list-style: none;
+}
+
+.login-header {
+    color: var(--bg);
+    margin: 0px;
+}
+
+.login-wrapper {
+    align-items: stretch;
+    display: flex;
+    justify-content: stretch;
+    margin-top: 200px;
+}
+
+.logo {
+    margin-right: 50px;
+}
+
+main {
+    border: 1px solid var(--black);
+    border-radius: 20px;
+    box-shadow: 10px 14px 20px rgba(0, 0, 0, 0.25);
+    margin-top: 50px;
+    padding: 50px;
+}
+
+.main-button {
+
+}
+
+.main-home {
+    background-color: var(--bg);
+}
+
+.main-login {
+    background-color: var(--yellow);
+}
+
+nav {
+    background-color: var(--yellow);
+    border: 1px solid var(--black);
+    border-radius: 20px;
+    margin-top: 30px;
+    padding: 15px 40px;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav-container li {
+    margin-right: 40px;
+}
+
+nav ul {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+p {
+
+}
+
+.sessao-button {
+    background-color: var(--yellow);
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: 15px;
+}
+
+.sessao-header {
+    background-color: var(--yellow);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    color: var(--black);
+    padding: 20px 30px;
+}
+
+.sessao-info {
+    background-color: var(--paper);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 20px 30px 40px;
+}
+
+.sessao-status {
+    background-color: var(--blue);
+    border: 1px solid var(--black);
+    border-radius: 15px;
+    margin-top: 15px;
+    max-width: 140px;
+    padding: 7px 75px;
+    text-align: center;
+}
+
+.sessao-wrapper {
+    margin-top: 40px;
+}
