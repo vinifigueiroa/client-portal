@@ -13,10 +13,11 @@ def make_headers(api_token):
     }
 
 
-def get_person_id(cpf, database_id, headers):
+def get_person_info(cpf, database_id, headers):
     """
     Queries notion API to find the item ID tied to the passed cpf
-        Returns person's Notion ID as a string
+        Returns person's Notion ID and Name as a dictionary
+        {"id" : "string", "name" : "string"}
     """
 
     pessoas_specifications = {
@@ -30,7 +31,13 @@ def get_person_id(cpf, database_id, headers):
 
     pessoas_database_query_url = "https://api.notion.com/v1/databases/" + database_id + "/query"
     response_pessoa = requests.post(pessoas_database_query_url, json=pessoas_specifications, headers=headers)
-    return json.loads(response_pessoa.text)['results'][0]['id']
+    pessoa_data = json.loads(response_pessoa.text)
+
+    id_name = {}
+    id_name["id"] = pessoa_data['results'][0]['id']
+    id_name["name"] = pessoa_data['results'][0]['properties']["API Client"]["formula"]["string"]
+
+    return id_name
 
 def get_sessoes(person_id, database_id, headers):
 
@@ -84,6 +91,12 @@ def get_sessoes(person_id, database_id, headers):
                             "select": {
                                 "does_not_equal": "Contratada"
                             }
+                        },
+                        {
+                            "property": "Negociação",
+                            "select": {
+                                "is_not_empty": True
+                            }
                         }
                     ]
                 }
@@ -106,22 +119,36 @@ def get_sessoes(person_id, database_id, headers):
     for sessao in range(len(sessoes_data['results'])):
         propriedades = {}
         propriedades["Código"] = sessoes_data['results'][sessao]['properties']['Código da Sessão']["title"][0]["plain_text"]
-        propriedades["Negociação"] = sessoes_data['results'][sessao]['properties']['Negociação']["select"]["name"]
+
+        if sessoes_data['results'][sessao]['properties']['Negociação']["select"] is not None:
+            propriedades["Negociação"] = sessoes_data['results'][sessao]['properties']['Negociação']["select"]["name"]
+        else:
+            propriedades["Negociação"] = None
 
         if sessoes_data['results'][sessao]['properties']['Sessão']['select'] is not None:
             propriedades["Sessão"] = sessoes_data['results'][sessao]['properties']['Sessão']["select"]["name"]
         else:
             propriedades["Sessão"] = None
-        todas_sessoes.append(propriedades)
 
-        propriedades["Briefing"] = sessoes_data['results'][sessao]['properties']["Briefing"]["rich_text"][0]["plain_text"]
+        if len(sessoes_data['results'][sessao]['properties']["Briefing"]["rich_text"]) == 0:
+            propriedades["Briefing"] = None
+        else:
+            propriedades["Briefing"] = sessoes_data['results'][sessao]['properties']["Briefing"]["rich_text"][0]["plain_text"]
+
         propriedades["Pacote"] = sessoes_data['results'][sessao]['properties']["API Pacote"]["formula"]["string"]
+
+        if sessoes_data['results'][sessao]['properties']["API Data"]["formula"]["string"] == "":
+            propriedades["Data"] = None
+        else:
+            propriedades["Data"] = sessoes_data['results'][sessao]['properties']["API Data"]["formula"]["string"]
 
         if len(sessoes_data['results'][sessao]['properties']["Endereço"]["rich_text"]) == 0:
             propriedades["Endereço"] = None
         else:
             propriedades["Endereço"] = sessoes_data['results'][sessao]['properties']["Endereço"]["rich_text"][0]["plain_text"]
 
-        propriedades["Valor Total"] = sessoes_data['results'][sessao]['properties']["Valor do Contrato"]["number"]
+        propriedades["ValorTotal"] = sessoes_data['results'][sessao]['properties']["Valor do Contrato"]["number"]
+
+        todas_sessoes.append(propriedades)
 
     return todas_sessoes

@@ -1,7 +1,7 @@
 import requests, json, os, configparser
 
 from flask import Flask, render_template, request, redirect, session
-from notion_api import make_headers, get_person_id, get_sessoes
+from notion_api import make_headers, get_person_info, get_sessoes
 
 # Initialize Application
 app = Flask(__name__)
@@ -30,7 +30,8 @@ def home():
         return redirect("/")
     else:
         cpf = request.form.get("cpf")
-        person_id = get_person_id(cpf, PESSOAS, headers)
+        person_info = get_person_info(cpf, PESSOAS, headers)
+        person_id = person_info["id"]
+        person_name = person_info["name"]
         sessoes = get_sessoes(person_id, SESSOES, headers)
-        test_title = sessoes[0]["Código"]
-        return render_template("home.html", title=test_title)
+        return render_template("home.html", sessoes=sessoes, person_name=person_name)
