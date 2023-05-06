@@ -110,6 +110,10 @@ def get_sessoes(person_id, database_id, headers):
         ]
     }
 
+    colors = {"Orçamento Enviado": "#F0ACC9", "Data Solicitada": "#FFCE77", "Aguardando Aceite": "#C8A0E3",
+        "Contratada": "#7FC97F", "Agendada": "#7FC97F", "Triagem": "#F9A86F", "Seleção": "#FF9182",
+        "Edição": "#6EC1F2", "Entrega": "#43D6BB", "Concluída": "#B4B4B4"}
+
     sessoes_database_query_url = "https://api.notion.com/v1/databases/" + database_id + "/query"
     response_sessoes = requests.post(sessoes_database_query_url, json=sessoes_specifications, headers=headers)
     sessoes_data = json.loads(response_sessoes.text)
@@ -120,13 +124,15 @@ def get_sessoes(person_id, database_id, headers):
         propriedades = {}
         propriedades["Código"] = sessoes_data['results'][sessao]['properties']['Código da Sessão']["title"][0]["plain_text"]
 
-        if sessoes_data['results'][sessao]['properties']['Negociação']["select"] is not None:
+        if sessoes_data['results'][sessao]['properties']['Negociação']["select"] != None:
             propriedades["Negociação"] = sessoes_data['results'][sessao]['properties']['Negociação']["select"]["name"]
+            propriedades["Color"] = colors[sessoes_data['results'][sessao]['properties']['Negociação']["select"]["name"]]
         else:
             propriedades["Negociação"] = None
 
-        if sessoes_data['results'][sessao]['properties']['Sessão']['select'] is not None:
+        if sessoes_data['results'][sessao]['properties']['Sessão']['select'] != None:
             propriedades["Sessão"] = sessoes_data['results'][sessao]['properties']['Sessão']["select"]["name"]
+            propriedades["Color"] = colors[sessoes_data['results'][sessao]['properties']['Sessão']["select"]["name"]]
         else:
             propriedades["Sessão"] = None
 
@@ -147,7 +153,18 @@ def get_sessoes(person_id, database_id, headers):
         else:
             propriedades["Endereço"] = sessoes_data['results'][sessao]['properties']["Endereço"]["rich_text"][0]["plain_text"]
 
-        propriedades["ValorTotal"] = sessoes_data['results'][sessao]['properties']["Valor do Contrato"]["number"]
+        if sessoes_data['results'][sessao]['properties']["Valor Total"]["formula"]["number"] == "":
+            propriedades["ValorTotal"] = None
+        else:
+            propriedades["ValorTotal"] = sessoes_data['results'][sessao]['properties']["Valor Total"]["formula"]["number"]
+
+        previas = sessoes_data['results'][sessao]['properties']["Link Prévias"]["url"]
+        if previas != None and "https://" not in previas:
+            propriedades["Prévias"] = "https://" + previas
+        elif previas != None and "https://" in previas:
+            propriedades["Prévias"] = previas
+        else:
+            propriedades["Prévias"] = None
 
         todas_sessoes.append(propriedades)
 

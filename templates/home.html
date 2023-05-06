@@ -17,14 +17,20 @@
             <div class="sessao-info">
 
                 {% if sessao["Sessão"] != None %}
-                    <p class="sessao-status">{{ sessao.Sessão }}</p>
+                    <p class="sessao-status" style="background-color: {{ sessao.Color }}">{{ sessao.Sessão }}</p>
                 {% else %}
-                    <p class="sessao-status">{{ sessao.Negociação }}</p>
+                    <p class="sessao-status" style="background-color: {{ sessao.Color }}">{{ sessao.Negociação }}</p>
                 {% endif %}
 
                 <h3 class="sessao">Resumo</h3>
+
+                {% if sessao["Briefing"] != "" %}
                     <p><b>Briefing: </b>{{ sessao.Briefing }}</p>
+                {% endif %}
+
+                {% if sessao["Pacote"] != "" %}
                     <p><b>Pacote: </b>{{ sessao.Pacote }}</p>
+                {% endif %}
 
                 {% if sessao["Data"] != None %}
                     <p><b>Data: </b>{{ sessao.Data }}</p>
@@ -34,13 +40,21 @@
                     <p><b>Endereço: </b>{{ sessao.Endereço }}</p>
                 {% endif %}
 
-                <h3 class="sessao">Orçamento</h3>
-                    <p><b>Total: </b>R${{ sessao.ValorTotal }},00</p>
-                    <p><b>Pago: </b>R$350,00</p>
-                    <p><b>Pendente: </b>R$:350,00</p>
-                <a href="" class="button sessao-button">Acessar Prévias</a>
-                <a href="" class="button sessao-button">Acessar Fotos</a>
-                <a href="" class="button sessao-button">Ver Documentos</a>
+                <!-- <h3 class="sessao">Orçamento</h3> -->
+
+                {% if sessao["Valor Total"] != None %}
+                <p><b>Total: </b>R${{ sessao.ValorTotal }},00</p>
+                {% endif %}
+
+                    <!-- <p><b>Pago: </b>R$350,00</p>
+                    <p><b>Pendente: </b>R$:350,00</p> -->
+
+                {% if sessao["Prévias"] != None %}
+                <a href="{{ sessao.Prévias }}" class="button sessao-button" target="_blank">Acessar Prévias</a>
+                {% endif %}
+
+                <!-- <a href="" class="button sessao-button">Acessar Fotos</a>
+                <a href="" class="button sessao-button">Ver Documentos</a> -->
             </div>
         </div>
         {% endfor %}
