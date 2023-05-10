@@ -50,5 +50,5 @@ These two folders store the `html`, `css` and image files required to render the
 
 ##### Contact me
 
-[Linkedin](https://www.linkedin.com/in/vini-fig/)
+[LinkedIn](https://www.linkedin.com/in/vini-fig/)
 Email: vinicius@criatco.com
